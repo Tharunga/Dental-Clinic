@@ -12,6 +12,7 @@ import com.sunrisedental.dao.DentistDAO;
 import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.dao.TreatmentDAO;
 import com.sunrisedental.model.Appointment;
+import com.sunrisedental.model.Dentist;
 import com.sunrisedental.model.User;
 
 import jakarta.servlet.ServletException;
@@ -69,6 +70,13 @@ public class AppointmentRegisterServlet extends HttpServlet {
             LocalTime time = LocalTime.parse(timeRaw);
             int dentistId = Integer.parseInt(dentistIdRaw);
 
+            Dentist dentist = dentistDAO.findById(dentistId);
+            if (dentist == null || !dentist.isActive()) {
+                req.setAttribute("error", "Selected dentist is not available for new appointments.");
+                req.getRequestDispatcher("/appointment-register.jsp").forward(req, resp);
+                return;
+            }
+
             if (appointmentDAO.slotTaken(dentistId, date, time)) {
                 req.setAttribute("error", "This dentist already has an appointment at the selected date and time. Please choose another slot.");
                 req.getRequestDispatcher("/appointment-register.jsp").forward(req, resp);
@@ -103,7 +111,7 @@ public class AppointmentRegisterServlet extends HttpServlet {
 
     private void loadLookups(HttpServletRequest req) {
         try {
-            req.setAttribute("dentists", dentistDAO.findAll());
+            req.setAttribute("dentists", dentistDAO.findAllActive());
             req.setAttribute("treatments", treatmentDAO.findAll());
         } catch (SQLException e) {
             req.setAttribute("error", "Could not load dentists or treatments from the database.");

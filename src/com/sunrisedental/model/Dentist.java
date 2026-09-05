@@ -9,6 +9,9 @@ public class Dentist implements Serializable {
     private int dentistId;
     private String dentistName;
     private String specialization;
+    private String mobileNumber;
+    private String email;
+    private boolean active;
 
     public int getDentistId() {
         return dentistId;
@@ -32,5 +35,29 @@ public class Dentist implements Serializable {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -18,6 +18,7 @@
         <a class="<%= uri.contains("search") || uri.contains("details") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/search">Find appointment</a>
         <a class="<%= uri.contains("billing") || uri.contains("bill") ? "active" : "" %>" href="${pageContext.request.contextPath}/billing">Calculate bill</a>
         <% if (currentUser != null && currentUser.isAdmin()) { %>
+        <a class="<%= uri.contains("/dentists") ? "active" : "" %>" href="${pageContext.request.contextPath}/dentists">Dentists</a>
         <a class="<%= uri.contains("/users") ? "active" : "" %>" href="${pageContext.request.contextPath}/users">Users</a>
         <a class="<%= uri.contains("system-log") ? "active" : "" %>" href="${pageContext.request.contextPath}/system-log">System Log</a>
         <% } %>
