@@ -48,8 +48,8 @@
             <div class="help-step">
                 <div class="step-no">5</div>
                 <div>
-                    <h3>Exit the system</h3>
-                    <p>Click Exit system when you leave the desk. This signs you out so the next person must log in again.</p>
+                    <h3>Log out</h3>
+                    <p>Click Logout at the bottom of the sidebar when you leave the desk. Confirm in the dialog so the next person must log in again.</p>
                 </div>
             </div>
         </section>

@@ -76,16 +76,87 @@ p { color: var(--muted); line-height: 1.55; }
   position: sticky;
   top: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .brand-mini { display: flex; gap: 12px; align-items: center; padding: 0 10px 24px; }
 .brand-mini strong { display: block; font-family: Georgia, serif; font-size: 1.05rem; }
 .brand-mini span { color: #9bbfb6; font-size: 0.8rem; }
+.nav { flex: 1; }
 .nav a {
   display: flex; align-items: center; gap: 10px;
   color: #d5e8e3; padding: 11px 14px; border-radius: 12px; margin-bottom: 6px;
 }
 .nav a:hover, .nav a.active { background: rgba(255,255,255,0.1); color: #fff; }
-.nav .exit { margin-top: 18px; color: #f3c9c4; }
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.btn-logout {
+  display: block;
+  width: 100%;
+  background: rgba(243, 201, 196, 0.15);
+  color: #f3c9c4;
+  border: 1px solid rgba(243, 201, 196, 0.35);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: center;
+}
+.btn-logout:hover {
+  background: rgba(243, 201, 196, 0.28);
+  color: #fff;
+}
+.sidebar-user {
+  margin: 12px 0 0;
+  color: #9bbfb6;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.sidebar-user span { display: block; }
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(18, 53, 47, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-backdrop.is-open {
+  display: flex;
+}
+.modal-card {
+  width: min(400px, 100%);
+  background: var(--card);
+  border: 1px solid #eadfce;
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+}
+.modal-card h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.modal-card p {
+  margin: 0 0 20px;
+  color: var(--muted);
+}
+.modal-card .actions {
+  margin-top: 0;
+  justify-content: flex-end;
+}
+.modal-card .btn { text-decoration: none; display: inline-block; }
+body.modal-open { overflow: hidden; }
 
 .main { flex: 1; padding: 28px 32px 48px; }
 .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -169,7 +240,7 @@ textarea { min-height: 90px; resize: vertical; }
 }
 
 @media print {
-  .sidebar, .topbar, .no-print { display: none !important; }
+  .sidebar, .topbar, .no-print, .modal-backdrop { display: none !important; }
   .main { padding: 0; }
   body { background: #fff; }
   .receipt { border: 0; box-shadow: none; }
