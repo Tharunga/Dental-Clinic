@@ -44,7 +44,11 @@
                 <h1>Good to see you, <%= user.getFullName() %></h1>
                 <p>Clinic overview — today’s schedule, revenue, and workload.</p>
             </div>
-            <div class="chip">Sunrise Dental · Colombo</div>
+            <div class="topbar-actions">
+                <a class="btn btn-primary" href="${pageContext.request.contextPath}/appointments/register">New appointment</a>
+                <a class="btn btn-ghost" href="${pageContext.request.contextPath}/billing">Print bill</a>
+                <div class="chip">Sunrise Dental · Colombo</div>
+            </div>
         </div>
         <jsp:include page="/WEB-INF/jspf/alerts.jsp"/>
 
@@ -97,14 +101,6 @@
                     <div class="num"><%= activePatients == null ? 0 : activePatients %></div>
                 </div>
             </article>
-        </section>
-
-        <section class="card" style="margin-top:18px;">
-            <p>Quick actions</p>
-            <div class="actions">
-                <a class="btn btn-primary" href="${pageContext.request.contextPath}/appointments/register">New appointment</a>
-                <a class="btn btn-ghost" href="${pageContext.request.contextPath}/billing">Print bill</a>
-            </div>
         </section>
 
         <section class="grid-2" style="margin-top:18px;">
