@@ -11,6 +11,8 @@ public class Appointment implements Serializable {
 
     private int appointmentId;
     private String appointmentNumber;
+    private int patientId;
+    private String nic;
     private String patientName;
     private String address;
     private String contactNumber;
@@ -37,6 +39,22 @@ public class Appointment implements Serializable {
 
     public void setAppointmentNumber(String appointmentNumber) {
         this.appointmentNumber = appointmentNumber;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getNic() {
+        return nic;
+    }
+
+    public void setNic(String nic) {
+        this.nic = nic;
     }
 
     public String getPatientName() {

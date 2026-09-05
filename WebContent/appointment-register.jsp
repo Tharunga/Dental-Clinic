@@ -9,6 +9,8 @@
     String selDentist = (String) request.getAttribute("dentistId");
     String selTreatment = (String) request.getAttribute("treatmentId");
     String selTime = (String) request.getAttribute("appointmentTime");
+    Boolean returning = (Boolean) request.getAttribute("returningPatient");
+    String lastVisitDate = (String) request.getAttribute("lastVisitDate");
     String[] times = {"09:00","09:30","10:00","10:30","11:00","11:30","12:00","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"};
 %>
 <!DOCTYPE html>
@@ -25,13 +27,32 @@
         <div class="topbar">
             <div>
                 <h1>Register new appointment</h1>
-                <p>The appointment number is created automatically after you save.</p>
+                <p>Enter the patient NIC first. Returning patients are filled in automatically.</p>
             </div>
         </div>
         <jsp:include page="/WEB-INF/jspf/alerts.jsp"/>
+
         <section class="card">
+            <form method="get" action="${pageContext.request.contextPath}/appointments/register">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="lookupNic">Patient NIC</label>
+                        <input id="lookupNic" name="nic" value="${nic}" placeholder="123456789V or 12-digit NIC" required>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Look up patient</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card" style="margin-top:18px;">
             <form method="post" action="${pageContext.request.contextPath}/appointments/register">
                 <div class="form-grid">
+                    <div class="field">
+                        <label for="nic">NIC number</label>
+                        <input id="nic" name="nic" value="${nic}" placeholder="123456789V or 12-digit NIC" required>
+                    </div>
                     <div class="field">
                         <label for="patientName">Patient name</label>
                         <input id="patientName" name="patientName" value="${patientName}" required>
@@ -44,6 +65,20 @@
                         <label for="address">Address</label>
                         <textarea id="address" name="address" required>${address}</textarea>
                     </div>
+                    <% if (returning != null) { %>
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <p style="margin:0;color:var(--muted, #64748b);font-size:0.95rem;">
+                            <%= Boolean.TRUE.equals(returning)
+                                    ? "Returning patient — details loaded from the database. You can update them if needed."
+                                    : "New patient — complete the details below." %>
+                            <% if (Boolean.TRUE.equals(returning)) { %>
+                            <br>
+                            Last visit:
+                            <strong><%= (lastVisitDate != null && !lastVisitDate.isEmpty()) ? lastVisitDate : "No previous visits" %></strong>
+                            <% } %>
+                        </p>
+                    </div>
+                    <% } %>
                     <div class="field">
                         <label for="dentistId">Dentist</label>
                         <select id="dentistId" name="dentistId" required>

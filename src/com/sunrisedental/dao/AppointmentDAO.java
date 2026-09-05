@@ -18,10 +18,12 @@ import com.sunrisedental.util.DBConnection;
 public class AppointmentDAO {
 
     private static final String SELECT_JOIN = """
-            SELECT a.appointment_id, a.appointment_number, a.patient_name, a.address, a.contact_number,
+            SELECT a.appointment_id, a.appointment_number, a.patient_id,
+                   p.nic, p.patient_name, p.address, p.contact_number,
                    a.dentist_id, d.dentist_name, a.treatment_id, t.treatment_name, t.cost,
                    a.appointment_date, a.appointment_time, a.status
             FROM appointments a
+            JOIN patients p ON a.patient_id = p.patient_id
             JOIN dentists d ON a.dentist_id = d.dentist_id
             JOIN treatments t ON a.treatment_id = t.treatment_id
             """;
@@ -30,20 +32,18 @@ public class AppointmentDAO {
         String number = nextAppointmentNumber();
         String sql = """
                 INSERT INTO appointments
-                (appointment_number, patient_name, address, contact_number, dentist_id, treatment_id,
+                (appointment_number, patient_id, dentist_id, treatment_id,
                  appointment_date, appointment_time, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BOOKED')
+                VALUES (?, ?, ?, ?, ?, ?, 'BOOKED')
                 """;
         try (Connection con = DBConnection.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, number);
-            ps.setString(2, appointment.getPatientName());
-            ps.setString(3, appointment.getAddress());
-            ps.setString(4, appointment.getContactNumber());
-            ps.setInt(5, appointment.getDentistId());
-            ps.setInt(6, appointment.getTreatmentId());
-            ps.setDate(7, Date.valueOf(appointment.getAppointmentDate()));
-            ps.setTime(8, Time.valueOf(appointment.getAppointmentTimeValue()));
+            ps.setInt(2, appointment.getPatientId());
+            ps.setInt(3, appointment.getDentistId());
+            ps.setInt(4, appointment.getTreatmentId());
+            ps.setDate(5, Date.valueOf(appointment.getAppointmentDate()));
+            ps.setTime(6, Time.valueOf(appointment.getAppointmentTimeValue()));
             ps.executeUpdate();
             return number;
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -135,6 +135,8 @@ public class AppointmentDAO {
         Appointment a = new Appointment();
         a.setAppointmentId(rs.getInt("appointment_id"));
         a.setAppointmentNumber(rs.getString("appointment_number"));
+        a.setPatientId(rs.getInt("patient_id"));
+        a.setNic(rs.getString("nic"));
         a.setPatientName(rs.getString("patient_name"));
         a.setAddress(rs.getString("address"));
         a.setContactNumber(rs.getString("contact_number"));

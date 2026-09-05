@@ -37,6 +37,7 @@
             <h2><%= a.getAppointmentNumber() %></h2>
             <p>Complete patient and visit record</p>
             <div class="details">
+                <div><span>NIC</span><strong><%= a.getNic() %></strong></div>
                 <div><span>Patient name</span><strong><%= a.getPatientName() %></strong></div>
                 <div><span>Contact number</span><strong><%= a.getContactNumber() %></strong></div>
                 <div style="grid-column:1/-1;"><span>Address</span><strong><%= a.getAddress() %></strong></div>

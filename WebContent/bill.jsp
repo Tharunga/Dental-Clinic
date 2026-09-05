@@ -50,6 +50,7 @@
             <div class="details">
                 <div><span>Appointment</span><strong><%= a.getAppointmentNumber() %></strong></div>
                 <div><span>Patient</span><strong><%= a.getPatientName() %></strong></div>
+                <div><span>NIC</span><strong><%= a.getNic() %></strong></div>
                 <div><span>Contact</span><strong><%= a.getContactNumber() %></strong></div>
                 <div><span>Dentist</span><strong><%= a.getDentistName() %></strong></div>
                 <div><span>Date / time</span><strong><%= a.getAppointmentDate() %> · <%= a.getAppointmentTime() %></strong></div>
