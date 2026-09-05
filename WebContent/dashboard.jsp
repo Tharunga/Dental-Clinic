@@ -7,6 +7,7 @@
     List<Appointment> recent = (List<Appointment>) request.getAttribute("recentAppointments");
     Integer total = (Integer) request.getAttribute("totalAppointments");
     Integer today = (Integer) request.getAttribute("todayAppointments");
+    Integer completed = (Integer) request.getAttribute("completedAppointments");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +41,19 @@
                     <div class="num"><%= today == null ? 0 : today %></div>
                 </div>
             </article>
-            <article class="card">
-                <p>Quick actions</p>
-                <div class="actions">
-                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/appointments/register">New appointment</a>
-                    <a class="btn btn-ghost" href="${pageContext.request.contextPath}/billing">Print bill</a>
+            <article class="card stat">
+                <div>
+                    <p>Completed</p>
+                    <div class="num"><%= completed == null ? 0 : completed %></div>
                 </div>
             </article>
+        </section>
+        <section class="card" style="margin-top:18px;">
+            <p>Quick actions</p>
+            <div class="actions">
+                <a class="btn btn-primary" href="${pageContext.request.contextPath}/appointments/register">New appointment</a>
+                <a class="btn btn-ghost" href="${pageContext.request.contextPath}/billing">Print bill</a>
+            </div>
         </section>
         <section class="card" style="margin-top:18px;">
             <h2>Upcoming appointments</h2>
@@ -72,7 +79,13 @@
                     <td><%= a.getDentistName() %></td>
                     <td><%= a.getAppointmentDate() %></td>
                     <td><%= a.getAppointmentTime() %></td>
-                    <td><span class="badge"><%= a.getStatus() %></span></td>
+                    <td><span class="badge<%
+                        if ("COMPLETED".equalsIgnoreCase(a.getStatus())) {
+                            out.print(" badge-completed");
+                        } else if ("CANCELLED".equalsIgnoreCase(a.getStatus())) {
+                            out.print(" badge-cancelled");
+                        }
+                    %>"><%= a.getStatus() %></span></td>
                 </tr>
                 <% } } %>
                 </tbody>

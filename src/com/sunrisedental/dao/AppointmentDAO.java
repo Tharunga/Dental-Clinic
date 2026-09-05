@@ -81,6 +81,37 @@ public class AppointmentDAO {
         return list;
     }
 
+    public List<Appointment> findFiltered(LocalDate date, Integer dentistId) throws SQLException {
+        List<Appointment> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(SELECT_JOIN);
+        List<Object> params = new ArrayList<>();
+        List<String> conditions = new ArrayList<>();
+        if (date != null) {
+            conditions.add("a.appointment_date = ?");
+            params.add(Date.valueOf(date));
+        }
+        if (dentistId != null) {
+            conditions.add("a.dentist_id = ?");
+            params.add(dentistId);
+        }
+        if (!conditions.isEmpty()) {
+            sql.append(" WHERE ").append(String.join(" AND ", conditions));
+        }
+        sql.append(" ORDER BY a.appointment_date DESC, a.appointment_time DESC");
+        try (Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(map(rs));
+                }
+            }
+        }
+        return list;
+    }
+
     public int countAll() throws SQLException {
         return scalarCount("SELECT COUNT(*) FROM appointments");
     }
@@ -89,16 +120,58 @@ public class AppointmentDAO {
         return scalarCount("SELECT COUNT(*) FROM appointments WHERE appointment_date = CURDATE()");
     }
 
+    public int countCompleted() throws SQLException {
+        return scalarCount("SELECT COUNT(*) FROM appointments WHERE status = 'COMPLETED'");
+    }
+
+    public boolean updateStatus(int appointmentId, String status) throws SQLException {
+        String sql = "UPDATE appointments SET status = ? WHERE appointment_id = ?";
+        try (Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, appointmentId);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    public void update(Appointment appointment) throws SQLException {
+        String sql = """
+                UPDATE appointments
+                SET dentist_id = ?, treatment_id = ?, appointment_date = ?,
+                    appointment_time = ?, status = ?
+                WHERE appointment_id = ?
+                """;
+        try (Connection con = DBConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, appointment.getDentistId());
+            ps.setInt(2, appointment.getTreatmentId());
+            ps.setDate(3, Date.valueOf(appointment.getAppointmentDate()));
+            ps.setTime(4, Time.valueOf(appointment.getAppointmentTimeValue()));
+            ps.setString(5, appointment.getStatus());
+            ps.setInt(6, appointment.getAppointmentId());
+            ps.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new SQLException("DOUBLE_BOOKING", e);
+        }
+    }
+
     public boolean slotTaken(int dentistId, LocalDate date, LocalTime time) throws SQLException {
+        return slotTaken(dentistId, date, time, 0);
+    }
+
+    public boolean slotTaken(int dentistId, LocalDate date, LocalTime time, int excludeAppointmentId)
+            throws SQLException {
         String sql = """
                 SELECT 1 FROM appointments
                 WHERE dentist_id = ? AND appointment_date = ? AND appointment_time = ?
+                  AND appointment_id <> ?
                 """;
         try (Connection con = DBConnection.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, dentistId);
             ps.setDate(2, Date.valueOf(date));
             ps.setTime(3, Time.valueOf(time));
+            ps.setInt(4, excludeAppointmentId);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }

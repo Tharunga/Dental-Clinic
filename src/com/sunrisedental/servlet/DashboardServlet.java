@@ -24,6 +24,7 @@ public class DashboardServlet extends HttpServlet {
         try {
             req.setAttribute("totalAppointments", appointmentDAO.countAll());
             req.setAttribute("todayAppointments", appointmentDAO.countToday());
+            req.setAttribute("completedAppointments", appointmentDAO.countCompleted());
             req.setAttribute("recentAppointments", appointmentDAO.findUpcoming(8));
         } catch (SQLException e) {
             req.setAttribute("error", "Could not load dashboard data. Please check the database connection.");

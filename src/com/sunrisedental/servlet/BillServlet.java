@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class BillServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private static final String STATUS_COMPLETED = "COMPLETED";
+
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
     private final BillDAO billDAO = new BillDAO();
     private final SystemLogDAO systemLogDAO = new SystemLogDAO();
@@ -31,7 +33,7 @@ public class BillServlet extends HttpServlet {
         String number = trim(req.getParameter("number"));
         req.setAttribute("number", number);
         if (!number.isEmpty()) {
-            lookup(req, number, false);
+            loadBill(req, number, false);
         }
         req.getRequestDispatcher("/bill.jsp").forward(req, resp);
     }
@@ -41,11 +43,54 @@ public class BillServlet extends HttpServlet {
         req.setAttribute("consultationFee", ClinicConfig.CONSULTATION_FEE);
         String number = trim(req.getParameter("number"));
         req.setAttribute("number", number);
-        lookup(req, number, true);
+        String action = trim(req.getParameter("action"));
+
+        if ("complete".equalsIgnoreCase(action)) {
+            completeAndPrint(req, number);
+        } else {
+            loadBill(req, number, true);
+        }
         req.getRequestDispatcher("/bill.jsp").forward(req, resp);
     }
 
-    private void lookup(HttpServletRequest req, String number, boolean generate) {
+    private void completeAndPrint(HttpServletRequest req, String number) {
+        if (number.isEmpty()) {
+            req.setAttribute("error", "Enter an appointment number to complete the visit.");
+            return;
+        }
+        try {
+            Appointment appointment = appointmentDAO.findByNumber(number.toUpperCase());
+            if (appointment == null) {
+                req.setAttribute("error", "No appointment found for number " + number.toUpperCase() + ".");
+                return;
+            }
+            req.setAttribute("appointment", appointment);
+
+            Bill bill = billDAO.createFor(appointment);
+            req.setAttribute("bill", bill);
+
+            if (!STATUS_COMPLETED.equalsIgnoreCase(appointment.getStatus())) {
+                appointmentDAO.updateStatus(appointment.getAppointmentId(), STATUS_COMPLETED);
+                appointment.setStatus(STATUS_COMPLETED);
+                User current = (User) req.getSession().getAttribute("user");
+                systemLogDAO.logQuietly(current, "APPOINTMENT_COMPLETE",
+                        "Completed " + appointment.getAppointmentNumber()
+                                + " with bill " + bill.getBillNumber());
+                req.setAttribute("success",
+                        "Appointment " + appointment.getAppointmentNumber()
+                                + " marked as Completed. Printing receipt…");
+            } else {
+                req.setAttribute("success",
+                        "Appointment " + appointment.getAppointmentNumber()
+                                + " is already Completed. Printing receipt…");
+            }
+            req.setAttribute("autoPrint", Boolean.TRUE);
+        } catch (SQLException e) {
+            req.setAttribute("error", "Could not complete the appointment. Please try again.");
+        }
+    }
+
+    private void loadBill(HttpServletRequest req, String number, boolean generate) {
         if (number.isEmpty()) {
             req.setAttribute("error", "Enter an appointment number to calculate the bill.");
             return;

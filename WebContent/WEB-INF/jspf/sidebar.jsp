@@ -15,7 +15,7 @@
     <nav class="nav">
         <a class="<%= uri.contains("dashboard") ? "active" : "" %>" href="${pageContext.request.contextPath}/dashboard">Home</a>
         <a class="<%= uri.contains("register") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/register">Register appointment</a>
-        <a class="<%= uri.contains("search") || uri.contains("details") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/search">Find appointment</a>
+        <a class="<%= uri.contains("search") || uri.contains("details") || uri.contains("/edit") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/search">Find appointment</a>
         <a class="<%= uri.contains("/patients") ? "active" : "" %>" href="${pageContext.request.contextPath}/patients">Patients</a>
         <a class="<%= uri.contains("billing") || uri.contains("bill") ? "active" : "" %>" href="${pageContext.request.contextPath}/billing">Calculate bill</a>
         <% if (currentUser != null && currentUser.isAdmin()) { %>

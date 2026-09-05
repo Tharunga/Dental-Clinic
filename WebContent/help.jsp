@@ -41,15 +41,15 @@
             <div class="help-step">
                 <div class="step-no">4</div>
                 <div>
-                    <h3>Display appointment details</h3>
-                    <p>Choose Find appointment and type the appointment number. The full patient and visit record appears on screen.</p>
+                    <h3>Display or edit appointment details</h3>
+                    <p>Choose Find appointment and type the appointment number. The full patient and visit record appears on screen. Click Edit appointment to change patient name, contact, address, dentist, treatment, date, time, or status (Booked, Completed, Cancelled).</p>
                 </div>
             </div>
             <div class="help-step">
                 <div class="step-no">5</div>
                 <div>
                     <h3>Calculate and print the bill</h3>
-                    <p>Open Calculate bill, enter the appointment number, then click Calculate bill. The total is consultation fee plus treatment cost. Use Print receipt for a paper copy.</p>
+                    <p>Open Calculate bill, enter the appointment number, then click Calculate bill. The total is consultation fee plus treatment cost. Click Confirm &amp; print receipt and accept the confirmation — this marks the appointment Completed and opens the print dialog. Completed visits appear in Find appointment and are counted on the home page.</p>
                 </div>
             </div>
             <div class="help-step">
