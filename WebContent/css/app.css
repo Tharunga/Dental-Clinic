@@ -60,10 +60,10 @@ p { color: var(--muted); line-height: 1.55; }
 .auth-brand p { color: #d7ebe6; }
 .mark {
   width: 56px; height: 56px; border-radius: 16px;
-  background: rgba(255,255,255,0.12);
-  display: grid; place-items: center;
-  font-size: 28px; margin-bottom: 18px;
+  display: block; object-fit: cover;
+  margin-bottom: 18px;
 }
+.brand-mini .mark { margin-bottom: 0; flex-shrink: 0; }
 .auth-form { padding: 48px 40px; }
 .auth-form h2 { font-size: 1.8rem; }
 

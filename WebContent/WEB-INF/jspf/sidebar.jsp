@@ -6,7 +6,7 @@
 %>
 <aside class="sidebar">
     <div class="brand-mini">
-        <div class="mark">S</div>
+        <img class="mark" src="${pageContext.request.contextPath}/images/logo.png" alt="Sunrise Dental Clinic">
         <div>
             <strong>Sunrise Dental</strong>
             <span>Colombo clinic desk</span>

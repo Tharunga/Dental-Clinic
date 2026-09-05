@@ -11,7 +11,7 @@
     <div class="auth-card">
         <section class="auth-brand">
             <div>
-                <div class="mark">S</div>
+                <img class="mark" src="${pageContext.request.contextPath}/images/logo.png" alt="Sunrise Dental Clinic">
                 <h1>Sunrise Dental Clinic</h1>
                 <p>Appointment and patient desk for authorised staff in Colombo.</p>
             </div>
