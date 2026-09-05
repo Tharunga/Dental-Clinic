@@ -3,6 +3,7 @@ package com.sunrisedental.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.dao.UserDAO;
 import com.sunrisedental.model.User;
 
@@ -18,6 +19,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private final UserDAO userDAO = new UserDAO();
+    private final SystemLogDAO systemLogDAO = new SystemLogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,6 +52,7 @@ public class LoginServlet extends HttpServlet {
             }
             HttpSession session = req.getSession(true);
             session.setAttribute("user", user);
+            systemLogDAO.logQuietly(user, "LOGIN", "User signed in");
             resp.sendRedirect(req.getContextPath() + "/dashboard");
         } catch (SQLException e) {
             req.setAttribute("error", "Unable to connect to the database. Check MySQL and db.properties.");

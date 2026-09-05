@@ -9,8 +9,10 @@ import java.util.regex.Pattern;
 
 import com.sunrisedental.dao.AppointmentDAO;
 import com.sunrisedental.dao.DentistDAO;
+import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.dao.TreatmentDAO;
 import com.sunrisedental.model.Appointment;
+import com.sunrisedental.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,6 +29,7 @@ public class AppointmentRegisterServlet extends HttpServlet {
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
     private final DentistDAO dentistDAO = new DentistDAO();
     private final TreatmentDAO treatmentDAO = new TreatmentDAO();
+    private final SystemLogDAO systemLogDAO = new SystemLogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -82,6 +85,9 @@ public class AppointmentRegisterServlet extends HttpServlet {
             appointment.setAppointmentTime(time);
 
             String number = appointmentDAO.insert(appointment);
+            User current = (User) req.getSession().getAttribute("user");
+            systemLogDAO.logQuietly(current, "APPOINTMENT_REGISTER",
+                    "Registered appointment " + number + " for " + appointment.getPatientName());
             req.getSession().setAttribute("success",
                     "Appointment registered successfully. Appointment number: " + number);
             resp.sendRedirect(req.getContextPath() + "/appointments/search?number=" + number);

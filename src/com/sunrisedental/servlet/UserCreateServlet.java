@@ -3,6 +3,7 @@ package com.sunrisedental.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.dao.UserDAO;
 import com.sunrisedental.model.User;
 import com.sunrisedental.util.AdminAccess;
@@ -19,6 +20,7 @@ public class UserCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final UserDAO userDAO = new UserDAO();
+    private final SystemLogDAO systemLogDAO = new SystemLogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -72,6 +74,8 @@ public class UserCreateServlet extends HttpServlet {
             user.setFullName(fullName);
             user.setAdmin(admin);
             userDAO.create(user, password, current.getUserId());
+            systemLogDAO.logQuietly(current, "USER_CREATE",
+                    "Created user \"" + username + "\" (" + (admin ? "ADMIN" : "RECEPTIONIST") + ")");
             AdminAccess.flashSuccess(req, "User \"" + username + "\" created successfully.");
             resp.sendRedirect(req.getContextPath() + "/users");
         } catch (SQLException e) {

@@ -5,8 +5,10 @@ import java.sql.SQLException;
 
 import com.sunrisedental.dao.AppointmentDAO;
 import com.sunrisedental.dao.BillDAO;
+import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.model.Appointment;
 import com.sunrisedental.model.Bill;
+import com.sunrisedental.model.User;
 import com.sunrisedental.util.ClinicConfig;
 
 import jakarta.servlet.ServletException;
@@ -21,6 +23,7 @@ public class BillServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final AppointmentDAO appointmentDAO = new AppointmentDAO();
     private final BillDAO billDAO = new BillDAO();
+    private final SystemLogDAO systemLogDAO = new SystemLogDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,6 +60,9 @@ public class BillServlet extends HttpServlet {
             if (generate) {
                 Bill bill = billDAO.createFor(appointment);
                 req.setAttribute("bill", bill);
+                User current = (User) req.getSession().getAttribute("user");
+                systemLogDAO.logQuietly(current, "BILL_CALCULATE",
+                        "Calculated bill " + bill.getBillNumber() + " for " + appointment.getAppointmentNumber());
             } else {
                 Bill existing = billDAO.findByAppointmentId(appointment.getAppointmentId());
                 if (existing != null) {

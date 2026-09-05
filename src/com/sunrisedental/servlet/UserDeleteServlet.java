@@ -3,6 +3,7 @@ package com.sunrisedental.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.sunrisedental.dao.SystemLogDAO;
 import com.sunrisedental.dao.UserDAO;
 import com.sunrisedental.model.User;
 import com.sunrisedental.util.AdminAccess;
@@ -19,6 +20,7 @@ public class UserDeleteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final UserDAO userDAO = new UserDAO();
+    private final SystemLogDAO systemLogDAO = new SystemLogDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,6 +57,7 @@ public class UserDeleteServlet extends HttpServlet {
             // Clear created_by references so FK does not block delete
             userDAO.clearCreatedByReferences(id);
             userDAO.delete(id);
+            systemLogDAO.logQuietly(current, "USER_DELETE", "Deleted user \"" + target.getUsername() + "\"");
             AdminAccess.flashSuccess(req, "User \"" + target.getUsername() + "\" deleted.");
         } catch (SQLException e) {
             AdminAccess.flashError(req, "Could not delete the user. Please try again.");

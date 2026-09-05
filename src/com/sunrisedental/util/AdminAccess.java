@@ -18,7 +18,7 @@ public final class AdminAccess {
         User user = session == null ? null : (User) session.getAttribute("user");
         if (user == null || !user.isAdmin()) {
             if (session != null) {
-                session.setAttribute("error", "Only administrators can manage users.");
+                session.setAttribute("error", "Only administrators can access this page.");
             }
             resp.sendRedirect(req.getContextPath() + "/dashboard");
             return null;

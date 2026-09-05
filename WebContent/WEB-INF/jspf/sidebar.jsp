@@ -19,6 +19,7 @@
         <a class="<%= uri.contains("billing") || uri.contains("bill") ? "active" : "" %>" href="${pageContext.request.contextPath}/billing">Calculate bill</a>
         <% if (currentUser != null && currentUser.isAdmin()) { %>
         <a class="<%= uri.contains("/users") ? "active" : "" %>" href="${pageContext.request.contextPath}/users">Users</a>
+        <a class="<%= uri.contains("system-log") ? "active" : "" %>" href="${pageContext.request.contextPath}/system-log">System Log</a>
         <% } %>
         <a class="<%= uri.contains("help") ? "active" : "" %>" href="${pageContext.request.contextPath}/help">Help</a>
     </nav>
