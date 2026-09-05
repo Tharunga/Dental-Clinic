@@ -1,0 +1,59 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Help | Sunrise Dental Clinic</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <jsp:include page="/WEB-INF/jspf/sidebar.jsp"/>
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1>Staff help</h1>
+                <p>Step-by-step guide for new reception staff.</p>
+            </div>
+        </div>
+        <section class="card">
+            <div class="help-step">
+                <div class="step-no">1</div>
+                <div>
+                    <h3>Sign in</h3>
+                    <p>Open the system and enter the username and password given by the clinic admin. Only authorised staff can continue.</p>
+                </div>
+            </div>
+            <div class="help-step">
+                <div class="step-no">2</div>
+                <div>
+                    <h3>Register a new appointment</h3>
+                    <p>Choose Register appointment. Enter patient name, address, contact number, dentist, treatment, date and time. The system creates a unique appointment number such as APT20260001. The same dentist cannot be booked twice at the same time.</p>
+                </div>
+            </div>
+            <div class="help-step">
+                <div class="step-no">3</div>
+                <div>
+                    <h3>Display appointment details</h3>
+                    <p>Choose Find appointment and type the appointment number. The full patient and visit record appears on screen.</p>
+                </div>
+            </div>
+            <div class="help-step">
+                <div class="step-no">4</div>
+                <div>
+                    <h3>Calculate and print the bill</h3>
+                    <p>Open Calculate bill, enter the appointment number, then click Calculate bill. The total is consultation fee plus treatment cost. Use Print receipt for a paper copy.</p>
+                </div>
+            </div>
+            <div class="help-step">
+                <div class="step-no">5</div>
+                <div>
+                    <h3>Exit the system</h3>
+                    <p>Click Exit system when you leave the desk. This signs you out so the next person must log in again.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
