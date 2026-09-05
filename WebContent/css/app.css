@@ -200,8 +200,10 @@ textarea { min-height: 90px; resize: vertical; }
 .btn-primary { background: var(--teal); color: #fff; }
 .btn-primary:hover { background: var(--teal-dark); }
 .btn-ghost { background: #efe7d8; color: var(--ink); }
+.btn-danger { background: #f3d4d0; color: var(--danger); }
 .btn-print { background: var(--gold); color: #fff; }
 .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.actions .btn { text-decoration: none; display: inline-block; font: inherit; }
 
 .alert {
   border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; font-size: 0.95rem;

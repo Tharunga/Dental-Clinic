@@ -17,13 +17,16 @@
         <a class="<%= uri.contains("register") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/register">Register appointment</a>
         <a class="<%= uri.contains("search") || uri.contains("details") ? "active" : "" %>" href="${pageContext.request.contextPath}/appointments/search">Find appointment</a>
         <a class="<%= uri.contains("billing") || uri.contains("bill") ? "active" : "" %>" href="${pageContext.request.contextPath}/billing">Calculate bill</a>
+        <% if (currentUser != null && currentUser.isAdmin()) { %>
+        <a class="<%= uri.contains("/users") ? "active" : "" %>" href="${pageContext.request.contextPath}/users">Users</a>
+        <% } %>
         <a class="<%= uri.contains("help") ? "active" : "" %>" href="${pageContext.request.contextPath}/help">Help</a>
     </nav>
     <div class="sidebar-footer">
         <button type="button" class="btn-logout" id="logoutOpenBtn">Logout</button>
         <p class="sidebar-user">
             <%= currentUser != null ? currentUser.getFullName() : "" %>
-            <span>(<%= currentUser != null ? currentUser.getRole() : "" %>)</span>
+            <span>(<%= currentUser != null ? currentUser.getRoleLabel() : "" %>)</span>
         </p>
     </div>
 </aside>

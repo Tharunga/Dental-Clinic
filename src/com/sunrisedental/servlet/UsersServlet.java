@@ -3,7 +3,8 @@ package com.sunrisedental.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import com.sunrisedental.dao.AppointmentDAO;
+import com.sunrisedental.dao.UserDAO;
+import com.sunrisedental.model.User;
 import com.sunrisedental.util.AdminAccess;
 
 import jakarta.servlet.ServletException;
@@ -12,22 +13,24 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/dashboard")
-public class DashboardServlet extends HttpServlet {
+@WebServlet("/users")
+public class UsersServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final AppointmentDAO appointmentDAO = new AppointmentDAO();
+
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (AdminAccess.requireAdmin(req, resp) == null) {
+            return;
+        }
         AdminAccess.transferFlash(req);
         try {
-            req.setAttribute("totalAppointments", appointmentDAO.countAll());
-            req.setAttribute("todayAppointments", appointmentDAO.countToday());
-            req.setAttribute("recentAppointments", appointmentDAO.findUpcoming(8));
+            req.setAttribute("users", userDAO.findAll());
         } catch (SQLException e) {
-            req.setAttribute("error", "Could not load dashboard data. Please check the database connection.");
+            req.setAttribute("error", "Could not load users. Please check the database connection.");
         }
-        req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
+        req.getRequestDispatcher("/users.jsp").forward(req, resp);
     }
 }

@@ -1,6 +1,7 @@
 package com.sunrisedental.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class User implements Serializable {
 
@@ -9,7 +10,10 @@ public class User implements Serializable {
     private int userId;
     private String username;
     private String fullName;
-    private String role;
+    private boolean admin;
+    private Integer createdBy;
+    private String createdByName;
+    private LocalDateTime createdAt;
 
     public int getUserId() {
         return userId;
@@ -35,11 +39,39 @@ public class User implements Serializable {
         this.fullName = fullName;
     }
 
-    public String getRole() {
-        return role;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getRoleLabel() {
+        return admin ? "ADMIN" : "RECEPTIONIST";
     }
 }
