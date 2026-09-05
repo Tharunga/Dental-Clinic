@@ -49,7 +49,7 @@
                 <div class="step-no">5</div>
                 <div>
                     <h3>Calculate and print the bill</h3>
-                    <p>Open Calculate bill, enter the appointment number, then click Calculate bill. The total is consultation fee plus treatment cost. Click Confirm &amp; print receipt and accept the confirmation — this marks the appointment Completed and opens the print dialog. Completed visits appear in Find appointment and are counted on the home page.</p>
+                    <p>Open Calculate bill, enter the appointment number, then click Calculate bill. The total is consultation fee plus treatment cost. Click Confirm &amp; print receipt and accept the confirmation — this marks the appointment Completed and opens the print dialog. Completed visits appear in Find appointment and feed the Home dashboard KPIs, charts, and tables.</p>
                 </div>
             </div>
             <div class="help-step">
