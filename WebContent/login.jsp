@@ -36,6 +36,14 @@
                     <label for="password">Password</label>
                     <input id="password" type="password" name="password" autocomplete="current-password" required>
                 </div>
+                <div class="field remember-field">
+                    <% Boolean rememberMe = (Boolean) request.getAttribute("rememberMe"); %>
+                    <label>
+                        <input type="checkbox" name="rememberMe"
+                            <%= Boolean.TRUE.equals(rememberMe) ? "checked" : "" %>>
+                        Remember username on this computer
+                    </label>
+                </div>
                 <button class="btn btn-primary" type="submit">Sign in</button>
             </form>
             <p style="margin-top:22px;font-size:0.85rem;">Demo access: <strong>admin / admin123</strong> or <strong>receptionist / rec123</strong></p>

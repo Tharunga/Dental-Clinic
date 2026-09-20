@@ -211,6 +211,17 @@ input, select, textarea {
 }
 textarea { min-height: 90px; resize: vertical; }
 .field { margin-bottom: 14px; }
+.remember-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.remember-field input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .search-bar {
   display: flex;
